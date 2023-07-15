@@ -217,6 +217,19 @@ function App() {
         reader.readAsDataURL(file); // TYPE :: base64
       };
       urlWithFileReaderToBlob(file);
+
+      /* 8️⃣ File & Blob to ArrayBuffer */
+      const fileToArrayBufferWithFileReader = (file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
+          const { target } = finishedEvent;
+          if (target && target.result) {
+            console.log("8️⃣ File & Blob to ArrayBuffer", target.result);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      };
+      fileToArrayBufferWithFileReader(file);
     }
   };
 
