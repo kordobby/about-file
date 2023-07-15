@@ -55,6 +55,22 @@ function App() {
       };
       getUrlToBlob();
 
+      /* Url To ArrayBuffer */
+      const getUrlToBuffer = async () => {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("ERROR");
+          }
+          const arrayBuffer = await response.arrayBuffer();
+          console.log(arrayBuffer, "urlToBuffer");
+          return arrayBuffer;
+        } catch (error) {
+          console.log(error, "ERROR");
+          return null;
+        }
+      };
+      getUrlToBuffer();
       /* FileReader 객체를 사용해서 접근하기 */
       const imgReaderElement = imgReaderRef.current;
       readFileWithFileReaderToUrl(file[0]);
