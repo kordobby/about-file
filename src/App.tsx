@@ -5,9 +5,8 @@ function App() {
   const [imgFile, setImageFile] = useState<FileList | null>(null);
   const [imgUrl, setImageUrl] = useState<string>("");
   const [fileReaderUrl, setFileReaderUrl] = useState<string>("");
-  const [bufferArrayImg, setBufferArrayImg] = useState<ArrayBuffer | string>(
-    ""
-  );
+  // const [bufferArrayImg, setBufferArrayImg] = useState<string>("");
+  const [bufferToBlobImg, setBufferToBlobImg] = useState<string>();
   const imgRef = useRef<HTMLImageElement>(null);
   const imgReaderRef = useRef<HTMLImageElement>(null);
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +69,8 @@ function App() {
           type: "image/jpeg",
         });
         console.log(blobSource, "Buffer to Blob");
+        const bufferToBlobToUrl = URL.createObjectURL(blobSource);
+        setBufferToBlobImg(bufferToBlobToUrl);
       }
     };
     reader.readAsArrayBuffer(file); // TYPE :: base64
@@ -83,6 +84,7 @@ function App() {
       <ImageByUrl ref={imgRef} src={imgUrl} alt="img-url" />
       <ImageByUrl ref={imgRef} src={fileReaderUrl} alt="img-reader" />
       {/* <ImageByUrl ref={imgRef} src={bufferArrayImg} alt="buffer-array" /> */}
+      <ImageByUrl ref={imgRef} src={bufferToBlobImg} alt="img-buffer-blob" />
     </Layout>
   );
 }
