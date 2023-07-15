@@ -33,13 +33,13 @@ function App() {
       const BlobToFileModified = new File([blob], modifiedFileName, {
         type: modifiedFileType,
       });
-      // console.log("BlobToFileModified 👉🏻", BlobToFileModified);
+      console.log("3️⃣ BlobToFileModified", BlobToFileModified);
 
       /* 4️⃣ File & Blob to URL */
       const FileToUrl = window.URL.createObjectURL(file);
       const BlobToUrl = window.URL.createObjectURL(blob);
-      // console.log("FileToUrl 👉🏻", FileToUrl);
-      // console.log("BlobToUrl 👉🏻", BlobToUrl);
+      console.log("4️⃣ FileToUrl", FileToUrl);
+      console.log("4️⃣ BlobToUrl 👉🏻", BlobToUrl);
       setFileToUrl(FileToUrl);
       setBlobToUrl(BlobToUrl);
 
@@ -65,7 +65,7 @@ function App() {
         const UrlToBlob = await response.blob();
         const BlobToUrl = window.URL.createObjectURL(UrlToBlob);
         console.log("6️⃣ UrlToBlob 👉🏻", UrlToBlob);
-        // console.log("6️⃣ BlobToUrl 👉🏻", BlobToUrl);
+        console.log("6️⃣ BlobToUrl 👉🏻", BlobToUrl);
         setBlobToUrl2(BlobToUrl);
       };
       getUrlToBlob(BlobToUrl);
