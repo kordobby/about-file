@@ -53,7 +53,7 @@ function App() {
         reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
           const { target } = finishedEvent;
           if (target && target.result) {
-            // console.log("5️⃣ File & Blob to URL With FileReader", target.result);
+            console.log("5️⃣ File & Blob to URL With FileReader", target.result);
             if (typeof target.result === "string") {
               setFileToUrlWithReader(target.result);
             }
@@ -224,18 +224,19 @@ function App() {
 export default App;
 
 const Layout = styled.section`
-  /* width: 100vh;
-  height: 100vh; */
   padding: 30px;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   flex-direction: column;
+  height: 100vh;
 `;
 
 const SectionBox = styled.div`
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+  width: 600px;
 `;
 const Section = styled.div`
   border: 1px solid gray;
@@ -243,11 +244,7 @@ const Section = styled.div`
   padding: 0px 20px;
   margin-top: 10px;
 `;
-const Input = styled.input`
-  /* width: 500px;
-  height: 50px;
-  border-radius: 20px; */
-`;
+const Input = styled.input``;
 
 const PreviewImage = styled.img`
   width: 200px;
