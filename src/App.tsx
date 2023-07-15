@@ -129,14 +129,14 @@ function App() {
     <Layout>
       <Input type="file" id="imgFile" onChange={handleFile} />
       <SectionBox>
-        {/* <Section>
+        <Section>
           <p>File 을 URL로 변환</p>
           <Image src={fileToUrl} alt="file-to-url" />
         </Section>
         <Section>
           <p>Blob 을 URL로 변환</p>
           <Image src={blobToUrl} alt="blob-to-url" />
-        </Section> */}
+        </Section>
         <Section>
           <p>Blob 을 URL로 변환한걸 한바퀴 다시 돌림</p>
           <Image src={blobToUrl2} alt="blob-to-url" />
