@@ -65,10 +65,11 @@ function App() {
     reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
       const { target } = finishedEvent;
       if (target && target.result) {
-        // console.log("Loaded Image", target.result);
-        // console.log("Loaded Image Type", typeof target.result);
-        // const blob = new
-        // setBufferArrayImg(target.result);
+        console.log("Loaded Image", target.result);
+        const blobSource = new Blob([target.result], {
+          type: "image/jpeg",
+        });
+        console.log(blobSource, "Buffer to Blob");
       }
     };
     reader.readAsArrayBuffer(file); // TYPE :: base64
