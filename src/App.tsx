@@ -20,6 +20,17 @@ function App() {
 
     // (method) FileReader.readAsArrayBuffer(blob: Blob): void
     if (file) {
+      /* File To Blob */
+      const fileBlock: File = file[0];
+      const blobBlock: Blob = fileBlock;
+
+      /* Blob To File */
+      const fileName = "leetrue.jpeg";
+      const fileType = "image/jpeg";
+      const BlobToFile: File = new File([blobBlock], fileName, {
+        type: fileType,
+      });
+      console.log("File to Blob", blobBlock);
       /* URL 로 접근하기 */
       const imgElement = imgRef.current;
       // 인자로 File객체를 받으며, 해당 file의 고유 URL 정보 생성하고 반환
