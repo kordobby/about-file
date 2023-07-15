@@ -130,7 +130,7 @@ import styled from "styled-components";
 function App() {
   const [fileToUrl, setFileToUrl] = useState<string>("");
   const [blobToUrl, setBlobToUrl] = useState<string>("");
-
+  const [blobToUrl2, setBlobToUrl2] = useState<string>("");
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     /* 1️⃣ 파일 가져오기 */
     // console.log("Target Value 👉🏻", event.target.value);
@@ -167,6 +167,17 @@ function App() {
       console.log("BlobToUrl 👉🏻", BlobToUrl);
       setFileToUrl(FileToUrl);
       setBlobToUrl(BlobToUrl);
+
+      /* 5️⃣ URL To Blob */
+      const getUrlToBlob = async (url: string) => {
+        const response = await fetch(url);
+        const UrlToBlob = await response.blob();
+        const BlobToUrl = window.URL.createObjectURL(UrlToBlob);
+        console.log("UrlToBlob 👉🏻", UrlToBlob);
+        console.log("BlobToUrl 👉🏻", BlobToUrl);
+        setBlobToUrl2(BlobToUrl);
+      };
+      getUrlToBlob(BlobToUrl);
     }
   };
 
@@ -181,6 +192,10 @@ function App() {
         <Section>
           <p>Blob 을 URL로 변환</p>
           <Image src={blobToUrl} alt="blob-to-url" />
+        </Section>
+        <Section>
+          <p>Blob 을 URL로 변환한걸 한바퀴 다시 돌림</p>
+          <Image src={blobToUrl2} alt="blob-to-url" />
         </Section>
       </SectionBox>
     </Layout>
