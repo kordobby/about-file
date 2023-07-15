@@ -6,19 +6,19 @@ function App() {
   const [blobToUrl, setBlobToUrl] = useState<string>("");
   const [blobToUrl2, setBlobToUrl2] = useState<string>("");
   const [fileToUrlWithReader, setFileToUrlWithReader] = useState<string>("");
+
+  /* 1️⃣ 파일 가져오기 */
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /* 1️⃣ 파일 가져오기 */
-    // console.log("Target Value 👉🏻", event.target.value);
     const getFileList = event.target.files;
-    // console.log("FileList 👉🏻", getFileList);
+    console.log("1️⃣ FileList", getFileList);
     if (getFileList) {
-      // console.log("File 👉🏻", getFileList[0]);
+      console.log("1️⃣ File", getFileList[0]);
 
       /* 2️⃣ File To Blob */
       const file: File = getFileList[0];
       const blob: Blob = file;
-      // console.log("File 👉🏻", file);
-      console.log("2️⃣ InitialBlob 👉🏻", blob);
+      console.log("2️⃣ File", getFileList[0]);
+      console.log("2️⃣ Blob 👉🏻", blob);
 
       /* 3️⃣ Blob To File */
       const fileName = file.name;
@@ -26,7 +26,7 @@ function App() {
       const BlobToFile = new File([blob], fileName, {
         type: fileType,
       });
-      // console.log("BlobToFile 👉🏻", BlobToFile);
+      console.log("3️⃣ BlobToFile", BlobToFile);
 
       const modifiedFileName = "lxxtrue.png";
       const modifiedFileType = "image/png";
