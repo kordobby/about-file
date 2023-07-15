@@ -140,6 +140,21 @@ function App() {
       const blob: Blob = file;
       console.log("File 👉🏻", file);
       console.log("Blob 👉🏻", blob);
+
+      /* Blob To File */
+      const fileName = file.name;
+      const fileType = file.type;
+      const BlobToFile = new File([blob], fileName, {
+        type: fileType,
+      });
+      console.log("BlobToFile 👉🏻", BlobToFile);
+
+      const modifiedFileName = "lxxtrue.png";
+      const modifiedFileType = "image/png";
+      const BlobToFileModified = new File([blob], modifiedFileName, {
+        type: modifiedFileType,
+      });
+      console.log("BlobToFileModified 👉🏻", BlobToFileModified);
     }
   };
 
