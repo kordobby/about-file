@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 function App() {
@@ -7,6 +7,9 @@ function App() {
   const [blobToUrl2, setBlobToUrl2] = useState<string>("");
   const [fileToUrlWithReader, setFileToUrlWithReader] = useState<string>("");
   const [bufferToUrl, setBufferToUrl] = useState<string>("");
+
+  const [canvasImg, setCanvasImg] = useState<string>("");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /* 1️⃣ 파일 가져오기 */
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,8 +146,46 @@ function App() {
         reader.readAsArrayBuffer(file);
       };
       arrayBufferToBlobToUrl(file);
+
+      /* 🎨 Make Preview with canvas */
+      const getPreviewImgWithCanvas = (file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
+          const { target } = finishedEvent;
+          if (target && target.result) {
+            const image = new Image();
+            image.onload = () => {
+              const canvas = canvasRef.current;
+              if (canvas) {
+                // ✅ getContxt() 메서드를 통해 CanvasRenderingContext2D 구하기
+                const context = canvas.getContext("2d");
+                if (context) {
+                  // ✅ clearRect() => 특정 부분을 지운 직사각형 그리기
+                  context.clearRect(0, 0, canvas.width, canvas.height);
+                  // ✅ drawImage() => 캔버스에서 이미지를 그려줌
+                  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                  // ✅ toDataURL(type, quality) => url 추출 (최고 퀄리티, 두번째 인자 숫자가 낮을 수록 낮은 퀄리티)
+                  const imageUrl = canvas.toDataURL("image/png", 1.0);
+                  setCanvasImg(imageUrl);
+                }
+              }
+            };
+            image.src = reader.result as string;
+          }
+        };
+        reader.readAsDataURL(file);
+      };
+      getPreviewImgWithCanvas(file);
     }
   };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = 200;
+      canvas.height = 200;
+    }
+  }, []);
 
   return (
     <Layout>
@@ -152,23 +193,28 @@ function App() {
       <SectionBox>
         <Section>
           <p>File 을 URL로 변환</p>
-          <Image src={fileToUrl} alt="file-to-url" />
+          <PreviewImage src={fileToUrl} alt="file-to-url" />
         </Section>
         <Section>
           <p>Blob 을 URL로 변환</p>
-          <Image src={blobToUrl} alt="blob-to-url" />
+          <PreviewImage src={blobToUrl} alt="blob-to-url" />
         </Section>
         <Section>
           <p>Blob 을 URL로 변환한걸 한바퀴 다시 돌림</p>
-          <Image src={blobToUrl2} alt="blob-to-url" />
+          <PreviewImage src={blobToUrl2} alt="blob-to-url" />
         </Section>
         <Section>
           <p>FileReader 로 변환한 URL</p>
-          <Image src={fileToUrlWithReader} alt="blob-to-url" />
+          <PreviewImage src={fileToUrlWithReader} alt="blob-to-url" />
         </Section>
         <Section>
           <p>Buffer 를 URL로 변환</p>
-          <Image src={bufferToUrl} alt="blob-to-url" />
+          <PreviewImage src={bufferToUrl} alt="blob-to-url" />
+        </Section>
+        <Section>
+          <p>canvas 미리보기</p>
+          <PreviewImage src={canvasImg} alt="canvas-img" />
+          <canvas ref={canvasRef} style={{ display: "none" }} />
         </Section>
       </SectionBox>
     </Layout>
@@ -203,7 +249,7 @@ const Input = styled.input`
   border-radius: 20px; */
 `;
 
-const Image = styled.img`
+const PreviewImage = styled.img`
   width: 200px;
   height: 200px;
 `;
