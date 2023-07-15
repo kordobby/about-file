@@ -128,20 +128,24 @@ import styled from "styled-components";
 //   );
 // }
 function App() {
+  const [fileToUrl, setFileToUrl] = useState<string>("");
+  const [blobToUrl, setBlobToUrl] = useState<string>("");
+
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    /* 1️⃣ 파일 가져오기 */
     // console.log("Target Value 👉🏻", event.target.value);
     const getFileList = event.target.files;
     // console.log("FileList 👉🏻", getFileList);
     if (getFileList) {
       // console.log("File 👉🏻", getFileList[0]);
 
-      /* File To Blob */
+      /* 2️⃣ File To Blob */
       const file: File = getFileList[0];
       const blob: Blob = file;
       console.log("File 👉🏻", file);
       console.log("Blob 👉🏻", blob);
 
-      /* Blob To File */
+      /* 3️⃣ Blob To File */
       const fileName = file.name;
       const fileType = file.type;
       const BlobToFile = new File([blob], fileName, {
@@ -155,12 +159,22 @@ function App() {
         type: modifiedFileType,
       });
       console.log("BlobToFileModified 👉🏻", BlobToFileModified);
+
+      /* 4️⃣ File & Blob to URL */
+      const FileToUrl = window.URL.createObjectURL(file);
+      const BlobToUrl = window.URL.createObjectURL(blob);
+      console.log("FileToUrl 👉🏻", FileToUrl);
+      console.log("BlobToUrl 👉🏻", BlobToUrl);
+      setFileToUrl(FileToUrl);
+      setBlobToUrl(BlobToUrl);
     }
   };
 
   return (
     <Layout>
       <Input type="file" id="imgFile" onChange={handleFile} />
+      <Image src={fileToUrl} alt="file-to-url" />
+      <Image src={blobToUrl} alt="blob-to-url" />
     </Layout>
   );
 }
@@ -183,7 +197,7 @@ const Input = styled.input`
   border-radius: 20px; */
 `;
 
-const ImageByUrl = styled.img`
+const Image = styled.img`
   width: 200px;
   height: 200px;
 `;
