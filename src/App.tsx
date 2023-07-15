@@ -27,11 +27,12 @@ function App() {
       /* Blob To File */
       const fileName = "leetrue.jpeg";
       const fileType = "image/jpeg";
-      const BlobToFile: File = new File([blobBlock], fileName, {
+      const ModifiedBlobToFile: File = new File([blobBlock], fileName, {
         type: fileType,
       });
-      console.log("File to Blob", blobBlock);
-      /* URL 로 접근하기 */
+      console.log("File to Blob", ModifiedBlobToFile);
+
+      /* File To Url */
       const imgElement = imgRef.current;
       // 인자로 File객체를 받으며, 해당 file의 고유 URL 정보 생성하고 반환
       const url = window.URL.createObjectURL(file[0]); // createObjectURL(obj: Blob | MediaSource): string
@@ -42,6 +43,17 @@ function App() {
           window.URL.revokeObjectURL(imgUrl); //  (method) revokeObjectURL(url: string): void
         };
       }
+
+      /* Blob To Url */
+      const blobUrl: string = window.URL.createObjectURL(blobBlock);
+
+      /* Url To Blob */
+      const getUrlToBlob = async () => {
+        const response = await fetch(blobUrl);
+        const UrlToBlob = await response.blob();
+        console.log(UrlToBlob, "URL TO BLOB");
+      };
+      getUrlToBlob();
 
       /* FileReader 객체를 사용해서 접근하기 */
       const imgReaderElement = imgReaderRef.current;
