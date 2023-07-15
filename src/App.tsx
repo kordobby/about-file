@@ -6,6 +6,7 @@ function App() {
   const [blobToUrl, setBlobToUrl] = useState<string>("");
   const [blobToUrl2, setBlobToUrl2] = useState<string>("");
   const [fileToUrlWithReader, setFileToUrlWithReader] = useState<string>("");
+  const [bufferToUrl, setBufferToUrl] = useState<string>("");
 
   /* 1️⃣ 파일 가져오기 */
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +123,26 @@ function App() {
       };
 
       urlToArrayBuffer(FileToUrl);
+
+      /* 🔟 ArrayBuffer to Blob */
+      const arrayBufferToBlobToUrl = (file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
+          const { target } = finishedEvent;
+          if (target && target.result) {
+            const arrayBuffer = target.result as ArrayBuffer;
+            const bufferToBlob = new Blob([arrayBuffer], {
+              type: file.type,
+            });
+            const bufferToBlobToURL = URL.createObjectURL(bufferToBlob);
+            console.log("🔟 ArrayBuffer to Blob", bufferToBlob);
+            console.log("🔟 ArrayBuffer to Blob to URL", bufferToBlobToURL);
+            setBufferToUrl(bufferToBlobToURL);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      };
+      arrayBufferToBlobToUrl(file);
     }
   };
 
@@ -144,6 +165,10 @@ function App() {
         <Section>
           <p>FileReader 로 변환한 URL</p>
           <Image src={fileToUrlWithReader} alt="blob-to-url" />
+        </Section>
+        <Section>
+          <p>Buffer 를 URL로 변환</p>
+          <Image src={bufferToUrl} alt="blob-to-url" />
         </Section>
       </SectionBox>
     </Layout>
