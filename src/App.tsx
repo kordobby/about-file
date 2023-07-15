@@ -131,6 +131,7 @@ function App() {
   const [fileToUrl, setFileToUrl] = useState<string>("");
   const [blobToUrl, setBlobToUrl] = useState<string>("");
   const [blobToUrl2, setBlobToUrl2] = useState<string>("");
+  const [fileToUrlWithReader, setFileToUrlWithReader] = useState<string>("");
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     /* 1️⃣ 파일 가져오기 */
     // console.log("Target Value 👉🏻", event.target.value);
@@ -142,8 +143,8 @@ function App() {
       /* 2️⃣ File To Blob */
       const file: File = getFileList[0];
       const blob: Blob = file;
-      console.log("File 👉🏻", file);
-      console.log("Blob 👉🏻", blob);
+      // console.log("File 👉🏻", file);
+      console.log("2️⃣ InitialBlob 👉🏻", blob);
 
       /* 3️⃣ Blob To File */
       const fileName = file.name;
@@ -151,33 +152,71 @@ function App() {
       const BlobToFile = new File([blob], fileName, {
         type: fileType,
       });
-      console.log("BlobToFile 👉🏻", BlobToFile);
+      // console.log("BlobToFile 👉🏻", BlobToFile);
 
       const modifiedFileName = "lxxtrue.png";
       const modifiedFileType = "image/png";
       const BlobToFileModified = new File([blob], modifiedFileName, {
         type: modifiedFileType,
       });
-      console.log("BlobToFileModified 👉🏻", BlobToFileModified);
+      // console.log("BlobToFileModified 👉🏻", BlobToFileModified);
 
       /* 4️⃣ File & Blob to URL */
       const FileToUrl = window.URL.createObjectURL(file);
       const BlobToUrl = window.URL.createObjectURL(blob);
-      console.log("FileToUrl 👉🏻", FileToUrl);
-      console.log("BlobToUrl 👉🏻", BlobToUrl);
+      // console.log("FileToUrl 👉🏻", FileToUrl);
+      // console.log("BlobToUrl 👉🏻", BlobToUrl);
       setFileToUrl(FileToUrl);
       setBlobToUrl(BlobToUrl);
 
-      /* 5️⃣ URL To Blob */
+      /* 5️⃣ File & Blob to URL With FileReader */
+      const fileToUrlWithFileReader = (file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
+          const { target } = finishedEvent;
+          if (target && target.result) {
+            // console.log("5️⃣ File & Blob to URL With FileReader", target.result);
+            if (typeof target.result === "string") {
+              setFileToUrlWithReader(target.result);
+            }
+          }
+        };
+        reader.readAsDataURL(file); // TYPE :: base64
+      };
+      fileToUrlWithFileReader(file);
+
+      /* 6️⃣ URL To Blob */
       const getUrlToBlob = async (url: string) => {
         const response = await fetch(url);
         const UrlToBlob = await response.blob();
         const BlobToUrl = window.URL.createObjectURL(UrlToBlob);
-        console.log("UrlToBlob 👉🏻", UrlToBlob);
-        console.log("BlobToUrl 👉🏻", BlobToUrl);
+        console.log("6️⃣ UrlToBlob 👉🏻", UrlToBlob);
+        // console.log("6️⃣ BlobToUrl 👉🏻", BlobToUrl);
         setBlobToUrl2(BlobToUrl);
       };
       getUrlToBlob(BlobToUrl);
+
+      /* 7️⃣ URL with FileReader to Blob */
+      const urlWithFileReaderToBlob = (file: File) => {
+        const reader = new FileReader();
+        reader.onloadend = function (finishedEvent: ProgressEvent<FileReader>) {
+          const { target } = finishedEvent;
+          if (target && target.result) {
+            if (typeof target.result === "string") {
+              setFileToUrlWithReader(target.result);
+              const UrlWithFileReaderToBlob = new Blob([target.result], {
+                type: "image/jpeg",
+              });
+              console.log(
+                "7️⃣ URL with FileReader to Blob",
+                UrlWithFileReaderToBlob
+              );
+            }
+          }
+        };
+        reader.readAsDataURL(file); // TYPE :: base64
+      };
+      urlWithFileReaderToBlob(file);
     }
   };
 
@@ -185,17 +224,21 @@ function App() {
     <Layout>
       <Input type="file" id="imgFile" onChange={handleFile} />
       <SectionBox>
-        <Section>
+        {/* <Section>
           <p>File 을 URL로 변환</p>
           <Image src={fileToUrl} alt="file-to-url" />
         </Section>
         <Section>
           <p>Blob 을 URL로 변환</p>
           <Image src={blobToUrl} alt="blob-to-url" />
-        </Section>
+        </Section> */}
         <Section>
           <p>Blob 을 URL로 변환한걸 한바퀴 다시 돌림</p>
           <Image src={blobToUrl2} alt="blob-to-url" />
+        </Section>
+        <Section>
+          <p>FileReader 로 변환한 URL</p>
+          <Image src={fileToUrlWithReader} alt="blob-to-url" />
         </Section>
       </SectionBox>
     </Layout>
