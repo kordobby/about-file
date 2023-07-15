@@ -173,8 +173,16 @@ function App() {
   return (
     <Layout>
       <Input type="file" id="imgFile" onChange={handleFile} />
-      <Image src={fileToUrl} alt="file-to-url" />
-      <Image src={blobToUrl} alt="blob-to-url" />
+      <SectionBox>
+        <Section>
+          <p>File 을 URL로 변환</p>
+          <Image src={fileToUrl} alt="file-to-url" />
+        </Section>
+        <Section>
+          <p>Blob 을 URL로 변환</p>
+          <Image src={blobToUrl} alt="blob-to-url" />
+        </Section>
+      </SectionBox>
     </Layout>
   );
 }
@@ -191,6 +199,16 @@ const Layout = styled.section`
   flex-direction: column;
 `;
 
+const SectionBox = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+const Section = styled.div`
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 0px 20px;
+  margin-top: 10px;
+`;
 const Input = styled.input`
   /* width: 500px;
   height: 50px;
