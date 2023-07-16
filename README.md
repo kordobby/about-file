@@ -3,6 +3,10 @@
 이미지 누끼따기 기능 구현하다가 파일 다루는게 너무 미숙하다는 생각에
 하루 날 잡고 파일 변환 관련 뿌수기한 결과물.
 
+### 📝 핵심코드 바로가기
+
+https://github.com/kordobby/about-file/blob/main/src/App.tsx
+
 ### 📝 블로그 정리
 
 https://leetrue-log.vercel.app/file-convert
